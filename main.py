@@ -14,10 +14,15 @@ pd.options.mode.chained_assignment = None
 
 # # Set up AWS credentials
 
-secrets = toml.load(".gitignore\secrets.toml")
-print(secrets)
-ACCESS_KEY = secrets['ACCESS_KEY']
-SECRET_KEY = secrets['SECRET_KEY']
+#  Personal PC
+# secrets = toml.load(".gitignore\secrets.toml")
+# print(secrets)
+# ACCESS_KEY = secrets['ACCESS_KEY']
+# SECRET_KEY = secrets['SECRET_KEY']
+
+#  Streamlit
+ACCESS_KEY = st.secrets["ACCESS_KEY"]
+SECRET_KEY = st.secrets["SECRET_KEY"]
 
 ################################
 
