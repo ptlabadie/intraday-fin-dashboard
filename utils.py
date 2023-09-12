@@ -3,13 +3,18 @@ from sqlalchemy import create_engine, text
 import matplotlib.pyplot as plt
 import boto3
 import toml
-
+import streamlit as st
 # # Set up AWS credentials
 
-secrets = toml.load(".gitignore\secrets.toml")
-print(secrets)
-ACCESS_KEY = secrets['ACCESS_KEY']
-SECRET_KEY = secrets['SECRET_KEY']
+# secrets = toml.load(".gitignore\secrets.toml")
+# print(secrets)
+# ACCESS_KEY = secrets['ACCESS_KEY']
+# SECRET_KEY = secrets['SECRET_KEY']
+
+#  Streamlit
+ACCESS_KEY = st.secrets["ACCESS_KEY"]
+SECRET_KEY = st.secrets["SECRET_KEY"]
+
 
 # List of Tickers:
 list_of_tickers = ['AAPL','MSFT','AMZN','NVDA','GOOGL','GOOG','TSLA','META','BRK.B','XOM','UNH','LLY','JPM','V','JNJ','AVGO','PG','MA','HD','CVX','MRK','ADBE','ABBV','COST','PEP','CSCO', 'KO', 'WMT', 'CRM', 'TMO', 'ACN', 'MCD', 'NFLX', 'BAC', 'PFE', 'ORCL', 
