@@ -28,6 +28,14 @@ SECRET_KEY = st.secrets["SECRET_KEY"]
 
 
 st.title('Intraday Financial Dashboard')
+st.text_area(
+    "By: Patrick Labadie",
+    "This dashboard shows one day of equity and derivative quotes for every company listed in the S&P 500. The quotes are pulled every 5 minutes using Questrade's API, with "
+    "the data stored on AWS cloud servers. "  
+    "This idea to build my own historical financial database with intraday quotes came from my Master's thesis. Considering how expensive "
+    "financial data became, a free alternative resource to conduct your own analysis comes in handy.",
+    )
+st.divider()
 dropdown_ticker = st.selectbox('Type the ticker or select any stock from the S&P 500!', list_of_tickers)
 
 filtered_df = get_dataframe_eq(dropdown_ticker)
@@ -43,14 +51,14 @@ upper_limit = filtered_df['lastTradePrice'].max()*1.011
 # Create the charts using Altair
 base = alt.Chart(filtered_df).encode(x={
       "field": "timestamp",
-      "timeUnit": "utcyearmonthdatehoursminutes",
+      "timeUnit": "yearmonthdatehoursminutes",
       "axis": {"title":"Date-Time", "labelAngle": 45}
     })
 
 line =  base.mark_line(clip=True).encode(
     x={
       "field": "timestamp",
-      "timeUnit": "utcyearmonthdatehoursminutes",
+      "timeUnit": "yearmonthdatehoursminutes",
       "axis": {"title":"Date-Time", "labelAngle": 45}
     },
     y=alt.Y('lastTradePrice', scale=alt.Scale(domain=[lower_limit, upper_limit]))
@@ -59,6 +67,11 @@ line =  base.mark_line(clip=True).encode(
 bar = base.mark_bar(color='#1f77b4',size=1).encode(y='vol:Q')
 chart = (bar + line).resolve_scale(y='independent').properties(width=600)
 st.altair_chart(chart, use_container_width=True)
+
+# Display Date
+datedisplay = filtered_df['timestamp'].iloc[0][0:10]
+st.subheader(f"Date: :blue[{datedisplay}]")
+
 
 # Use columns to display the prices side-by-side
 col1, col2 = st.columns(2)
@@ -134,14 +147,14 @@ try:
 
   base = alt.Chart(options_df).encode(x={
         "field": "timestamp",
-        "timeUnit": "utcyearmonthdatehoursminutes",
+        "timeUnit": "yearmonthdatehoursminutes",
         "axis": {"title":"Date-Time", "labelAngle": 45}
       })
 
   line =  base.mark_line(clip=True).encode(
       x={
         "field": "timestamp",
-        "timeUnit": "utcyearmonthdatehoursminutes",
+        "timeUnit": "yearmonthdatehoursminutes",
         "axis": {"title":"Date-Time", "labelAngle": 45}
       },
       y=alt.Y('lastTradePrice', scale=alt.Scale(domain=[lower_limit_opt, upper_limit_opt]))
